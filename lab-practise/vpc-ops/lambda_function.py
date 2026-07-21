@@ -21,12 +21,14 @@ def lambda_handler(event,context):
     # Creating a loop to check all the elastic ips
     for elastic_ip in all_ips:
         if elastic_ip.association_id is None:
+            ip_address = elastic_ip.public_ip
+            alloc_id = elastic_ip.allocation_id
             print(f"Unassociated Elastic IP found: {elastic_ip.public_ip} (Allocation ID: {elastic_ip.allocation_id})")
             elastic_ip.release()
-            released_ips.append(elastic_ip.public_ip)
-            print(f"Released Elastic IP: {elastic_ip.public_ip}(Allocation ID: {elastic_ip.allocation_id})")
+            released_ips.append(ip_address)
+            print(f"Released Elastic IP: {ip_address}(Allocation ID: {alloc_id})")
         else:
-            print(f"Elastic IP {elastic_ip.public_ip} (Allocation ID: {elastic_ip.allocation_id}) is currently associated with an instance.")
+            print(f"Elastic IP {ip_address} (Allocation ID: {alloc_id}) is currently associated with an instance.")
 
     return{
         'statuscode':200,
