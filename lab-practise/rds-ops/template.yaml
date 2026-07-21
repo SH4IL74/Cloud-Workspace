@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Template for S3 CSV currency conversion in LocalStack.
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 128
+    Runtime: python3.12
+
+Resources:
+  CurrencyConverterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: lambda_function.lambda_handler
+      Description: Reads S3 CSV billing data and converts currency amounts to USD.
+      Environment:
+        Variables:
+          # Points the Lambda Docker container back to LocalStack on your host machine
+          LOCALSTACK_ENDPOINT: "http://host.docker.internal:4566"
+          AWS_REGION: "ap-south-1"
+          AWS_ACCESS_KEY_ID: "test"
+          AWS_SECRET_ACCESS_KEY: "test"
+      Policies:
+        - AmazonS3ReadOnlyAccess
+
+Outputs:
+  CurrencyConverterFunctionArn:
+    Description: "Currency Converter Lambda Function ARN"
+    Value: !GetAtt CurrencyConverterFunction.Arn

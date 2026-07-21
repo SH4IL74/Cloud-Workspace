@@ -1,0 +1,28 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "ap-south-1",
+      "eventTime": "2026-07-21T06:00:00.000Z",
+      "eventName": "ObjectCreated:Put",
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "testConfigRule",
+        "bucket": {
+          "name": "my-billing-bucket",
+          "ownerIdentity": {
+            "principalId": "A3NL1KOZZK2BD5"
+          },
+          "arn": "arn:aws:s3:::my-billing-bucket"
+        },
+        "object": {
+          "key": "billing_data_meat_june_2023.csv",
+          "size": 1262,
+          "eTag": "d41d8cd98f00b204e9800998ecf8427e",
+          "sequencer": "0055823CD778225DAA"
+        }
+      }
+    }
+  ]
+}
