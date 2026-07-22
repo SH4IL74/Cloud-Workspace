@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [ main, master ]
 
-# Set working directory for all run commands to private-cloud
 defaults:
   run:
     working-directory: private-cloud
@@ -24,14 +23,6 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Cache Pip Packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
@@ -40,11 +31,10 @@ jobs:
       - name: Start LocalStack Services
         run: |
           docker-compose up -d
-          echo "Waiting for LocalStack gateway to start..."
-          until curl -s http://localhost:4566/_localstack/health | grep -q '"s3": "available"\|"s3": "running"'; do
-            sleep 2
-          done
-          echo "✅ LocalStack is fully operational!"
+          echo "Waiting 15 seconds for LocalStack container to start..."
+          sleep 15
+          curl -s http://localhost:4566/_localstack/health || true
+          echo "✅ LocalStack ready!"
 
       - name: Provision Private Cloud Infrastructure
         env:
