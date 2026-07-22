@@ -17,7 +17,7 @@ def deploy_compute_and_messaging(public_subnet_id,web_sg_id):
         InstanceType='t3.micro',
         MinCount=1,
         MaxCount=1,
-        SybnetId=public_subnet_id,
+        SubnetId=public_subnet_id,
         SecurityGroupIds=[web_sg_id]
 
     )

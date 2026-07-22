@@ -21,7 +21,7 @@ def create_network():
     # 3.InternetGateway
     igw = ec2.create_internet_gateway()
     igw_id = igw['InternetGateway']['InternetGatewayId']
-    ec2.attach_internet_gateway(InternetGatewayId=igw_id,VpcId_=vpc_id)
+    ec2.attach_internet_gateway(InternetGatewayId=igw_id,VpcId=vpc_id)
 
     # 4.Route Table for Public Subnet
     rt = ec2.create_route_table(VpcId=vpc_id)
