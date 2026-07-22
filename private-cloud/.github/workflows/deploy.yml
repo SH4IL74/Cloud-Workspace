@@ -22,14 +22,15 @@ jobs:
       - name: Install Python Dependencies
         run: |
           pip install --upgrade pip
-          pip install -r private-cloud/requirements.txt
+          pip install -r requirements.txt
+        working-directory: private-cloud
 
       - name: Start LocalStack via Docker Compose
         run: |
-          cd private-cloud
           docker-compose up -d
-          echo "Waiting for LocalStack to initialize..."
+          echo "Waiting 15 seconds for LocalStack..."
           sleep 15
+        working-directory: private-cloud
 
       - name: Provision Private Cloud Infrastructure
         env:
@@ -37,8 +38,8 @@ jobs:
           AWS_DEFAULT_REGION: "ap-south-1"
           AWS_ACCESS_KEY_ID: "test"
           AWS_SECRET_ACCESS_KEY: "test"
-        run: |
-          python private-cloud/deploy.py
+        run: python deploy.py
+        working-directory: private-cloud
 
       - name: Verify Infrastructure Deployment
         env:
@@ -46,8 +47,8 @@ jobs:
           AWS_DEFAULT_REGION: "ap-south-1"
           AWS_ACCESS_KEY_ID: "test"
           AWS_SECRET_ACCESS_KEY: "test"
-        run: |
-          python private-cloud/verify_stack.py
+        run: python verify_stack.py
+        working-directory: private-cloud
 
       - name: Teardown Cloud Infrastructure
         if: always()
@@ -56,5 +57,5 @@ jobs:
           AWS_DEFAULT_REGION: "ap-south-1"
           AWS_ACCESS_KEY_ID: "test"
           AWS_SECRET_ACCESS_KEY: "test"
-        run: |
-          python private-cloud/destroy.py
+        run: python destroy.py
+        working-directory: private-cloud
