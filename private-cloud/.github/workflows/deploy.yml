@@ -25,12 +25,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Start LocalStack
-        uses: LocalStack/setup-localstack@v0.3.2
-        with:
-          image-tag: 'latest'
-          install-awslocal: 'true'
-          use-pro: 'false'
+      - name: Start LocalStack via Docker Compose
+        run: |
+          cd private-cloud
+          docker-compose up -d
+          echo "Waiting 20 seconds for LocalStack container to initialize..."
+          sleep 20
 
       - name: Provision Private Cloud Infrastructure
         env:
