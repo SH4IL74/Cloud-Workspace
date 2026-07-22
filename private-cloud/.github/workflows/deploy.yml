@@ -10,11 +10,6 @@ jobs:
   test-and-deploy:
     runs-on: ubuntu-latest
 
-    # Set working directory at job defaults level
-    defaults:
-      run:
-        working-directory: ./private-cloud
-
     steps:
       - name: Checkout Repository Code
         uses: actions/checkout@v4
@@ -26,6 +21,7 @@ jobs:
 
       - name: Install Python Dependencies
         run: |
+          cd private-cloud
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
@@ -34,6 +30,7 @@ jobs:
         with:
           image-tag: 'latest'
           install-awslocal: 'true'
+          use-pro: 'false'
 
       - name: Provision Private Cloud Infrastructure
         env:
@@ -42,6 +39,7 @@ jobs:
           AWS_ACCESS_KEY_ID: "test"
           AWS_SECRET_ACCESS_KEY: "test"
         run: |
+          cd private-cloud
           python deploy.py
 
       - name: Verify Infrastructure Deployment
@@ -51,6 +49,7 @@ jobs:
           AWS_ACCESS_KEY_ID: "test"
           AWS_SECRET_ACCESS_KEY: "test"
         run: |
+          cd private-cloud
           python verify_stack.py
 
       - name: Teardown Cloud Infrastructure
@@ -61,4 +60,5 @@ jobs:
           AWS_ACCESS_KEY_ID: "test"
           AWS_SECRET_ACCESS_KEY: "test"
         run: |
+          cd private-cloud
           python destroy.py
