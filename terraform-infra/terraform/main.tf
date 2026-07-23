@@ -70,7 +70,43 @@ resource "aws_security_group" "web_sg"{
   }
 
   tags = {
-    Name = "${var.project_name}-web-sg-${var.environment}"
+    Name        = "${var.project_name}-web-sg-${var.environment}"
     Environment = var.environment
   }
 }
+
+# 1.Zip the python code automatically before applying
+data "archive_file" "lambda_zip"{
+  type        = "zip"
+  source_file = "${path.module}/app.py"
+  output_path = "${path.module}/lambda_function.zip"
+}
+
+# 2.IAM Role for Lambda 
+resource "aws_iam_role" "lambda_role"{
+  name = "${var.project_name}-lambda-role-${var.environment}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com" 
+        }
+      }
+    ]
+  })
+}
+
+# 3.AWS Lambda Function Resource 
+resource "aws_lambda_function" "app_lambda"{
+  filename         = data.archive_file.lambda_zip.output_path
+  function_name    = "${var.project_name}-function-${var.environment}"
+  role             = aws_iam_role.lambda_role.arn 
+  handler          = "app.handler"
+  runtime          = "python3.12"
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+}
+
