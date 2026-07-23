@@ -1,39 +1,18 @@
-output "s3_bucket_name"{
-  value       = aws_s3_bucket.app_storage.id
-  description = "The name of the created S3 bucket"
+output "dev_s3_bucket"{
+    value       = module.dev_environment.s3_bucket_name
+    description = "S3 bucket for DEV"
 }
 
-output "s3_bucket_arn"{
-  value       = aws_s3_bucket.app_storage.arn
-  description = "The ARN of the created S3 bucket"
+output "staging_s3_bucket"{
+    value       = module.staging_environment.s3_bucket_name
+    description = "S3 bucket for STAGING"
 }
 
-output "dynamodb_table_name"{
-  value       = aws_dynamodb_table.users_table.name
-  description = "The name of the DynamoDB Table"
+output "dev_lambda_function"{
+    value       = module.dev_environment.lambda_function_name
+    description = "Lambda function for DEV"
 }
-
-output "vpc_id"{
-  value       = aws_vpc.main_vpc.id
-  description = "The ID of the created VPC"
-}
-
-output "public_subnet_id"{
-  value       = aws_subnet.public_subnet.id
-  description = "The ID of the public subnet"
-}
-
-output "security_group_id"{
-  value       = aws_security_group.web_sg.id
-  description = "The ID of the web security group"
-}
-
-output "lambda_function_name"{
-  value      = aws_lambda_function.app_lambda.function_name 
-  description = "The name of the Lambda Function"
-}
-
-output "lambda_function_arn"{
-  value       = aws_lambda_function.app_lambda.arn
-  description = "The ARN of the Lambda Function"
+output "staging_lambda_function"{
+    value       = module.staging_environment.lambda_function_name
+    description = "Lambda function for STAGING"
 }
