@@ -1,18 +1,19 @@
-output "dev_s3_bucket"{
-    value       = module.dev_environment.s3_bucket_name
-    description = "S3 bucket for DEV"
+output "active_workspace" {
+  value       = terraform.workspace
+  description = "The active Terraform workspace"
 }
 
-output "staging_s3_bucket"{
-    value       = module.staging_environment.s3_bucket_name
-    description = "S3 bucket for STAGING"
+output "s3_bucket_name" {
+  value       = module.app_environment.s3_bucket_name
+  description = "S3 bucket for the active workspace"
 }
 
-output "dev_lambda_function"{
-    value       = module.dev_environment.lambda_function_name
-    description = "Lambda function for DEV"
+output "lambda_function_name" {
+  value       = module.app_environment.lambda_function_name
+  description = "Lambda function for the active workspace"
 }
-output "staging_lambda_function"{
-    value       = module.staging_environment.lambda_function_name
-    description = "Lambda function for STAGING"
+
+output "vpc_id" {
+  value       = module.app_environment.vpc_id
+  description = "VPC ID for the active workspace"
 }
