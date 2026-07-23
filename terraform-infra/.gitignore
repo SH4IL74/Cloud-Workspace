@@ -1,0 +1,18 @@
+# Local Terraform execution cache
+.terraform/
+.terraform.lock.hcl
+
+# State files & variables (secrets)
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+
+# Local build artifacts
+*.zip
+
+# Virtual environment & Editor configurations
+.venv/
+.vscode/
+.idea/
+.DS_Store
