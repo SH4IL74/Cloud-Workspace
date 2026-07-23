@@ -24,3 +24,53 @@ resource "aws_dynamodb_table" "users_table"{
     ManagedBy   = "Terraform"
   }
 }
+
+# 1.Custom Virtual Private Cloud
+resource "aws_vpc" "main_vpc"{
+  cidr_block           = var.vpc_cidr
+  enable_dns_hostnames = true
+
+  tags = {
+    Name        = "${var.project_name}-vpc-${var.environment}"
+    Environment = var.environment
+  }
+}
+
+# 2.Public Subnet inside the VPC 
+resource "aws_subnet" "public_subnet"{
+  vpc_id                  = aws_vpc.main_vpc.id
+  cidr_block              = var.public_subnet_cidr
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name        = "${var.project_name}-public-subnet-${var.environment}"
+    Environment = var.environment
+  }
+}
+# 3.Security Group (Firewall Rules)
+resource "aws_security_group" "web_sg"{
+  name        = "${var.project_name}-web-sg-${var.environment}"
+  description = "Allow HTTP traffic"
+  vpc_id      = aws_vpc.main_vpc.id
+
+  # Inbound Rule: Allow HTTP (Port 80) from anywhere
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Outbound Rule: Allow all outbound traffic
+  egress{
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.project_name}-web-sg-${var.environment}"
+    Environment = var.environment
+  }
+}

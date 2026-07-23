@@ -12,3 +12,18 @@ output "dynamodb_table_name"{
   value       = aws_dynamodb_table.users_table.name
   description = "The name of the DynamoDB Table"
 }
+
+output "vpc_id"{
+  value = aws_vpc.main_vpc.id
+  description = "The ID of the created VPC"
+}
+
+output "public_subnet_id"{
+  value = aws_subnet.public_subnet.id
+  description = "The ID of the public subnet"
+}
+
+output "security_group_id"{
+  value = aws_security_group.web_sg.id
+  description = "The ID of the web security group"
+}
