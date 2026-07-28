@@ -1,0 +1,16 @@
+---
+- name: Ensure Nginx is installed
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Deploy dynamic HTML template from role
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/index.nginx-debian.html
+
+- name: Ensure Nginx service is running
+  ansible.builtin.service:
+    name: nginx
+    state: started

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ansible Dynamic Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f9; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; }
+        .highlight { color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Welcome, {{ engineer_name }}! 🚀</h1>
+        <p>This page was dynamically rendered using an <strong>Ansible Jinja2 Template</strong>.</p>
+        <hr>
+        <ul>
+            <li><strong>Environment:</strong> <span class="highlight">{{ environment_type }}</span></li>
+            <li><strong>Target Hostname:</strong> {{ ansible_hostname }}</li>
+            <li><strong>Target OS:</strong> {{ ansible_distribution }} {{ ansible_distribution_version }}</li>
+            <li><strong>Deployed At:</strong> {{ ansible_date_time.date }} {{ ansible_date_time.time }} UTC</li>
+        </ul>
+    </div>
+</body>
+</html>
