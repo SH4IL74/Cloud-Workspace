@@ -1,7 +1,0 @@
----
-- name: Deploy Infrastructure via Roles
-  hosts: webservers
-  become: yes
-
-  roles:
-    - webserver
